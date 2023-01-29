@@ -1,6 +1,8 @@
 const mysql = require("../database/connect.js");
 const table = "USER";
 const uuid = require("uuid");
+const passport = require('passport');
+
 // uid varchar(50) not null unique,
 // nickname varchar(12) not null unique,
 // email varchar(20) not null unique,
@@ -135,15 +137,30 @@ User.create = function(nickname, email, password, phone, authtype, usertype, res
     const uid = uuid.v1();
     mysql.query(`insert into ${table} values ("${uid}","${nickname}", "${email}", "${password}", "${phone}", ${authtype}, "${usertype}")`, (err, res)=>{
         if (err) {
-            console.log("error: ", err);
             result(err, null);
         } else {
-            console.log(res);
             result(null, res);
-            console.log(`Create New User: ${uid}`)
         }
     });
 
+}
+
+User.login = function(req, res, next) {    
+	passport.authenticate('local', function(err, user, info) {
+		if (err) {
+			return next(err);
+		}
+		if (!user) {
+			return res.json(200, { success: false, message: info.message });
+		}
+		req.login(user, loginErr => {
+			if (loginErr) {
+                return next(loginErr);
+            } else {
+                res.json(200, { success: true, message: `로그인 성공`, user: req.user });
+            }
+		})
+	})(req, res, next);
 }
 
 module.exports = User;

@@ -2,6 +2,8 @@ const express = require("express");
 var router = express.Router();
 var userController = require("../controller/user_controller.js");
 
+router.get("/get-table", userController.findT);
+
 /**
  * @swagger
  * tags:
@@ -70,6 +72,12 @@ router.get("/findByEmail/:email", userController.findByEmail);
  *                      $ref: '#/components/schemas/User'
  */
 router.post("/sign-up", userController.userSignUp);
+
+router.post("/login", userController.login);
+
+router.get("/autologin", userController.autologin);
+
+router.get("/logout", userController.logout);
 
 module.exports = router;
 
