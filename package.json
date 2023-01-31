@@ -1,11 +1,11 @@
 {
-  "name": "project_a_api",
+  "name": "desksetup_project",
   "version": "1.0.0",
   "description": "first make",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -21,5 +21,8 @@
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.5.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^29.4.1"
   }
 }
