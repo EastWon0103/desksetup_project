@@ -6,7 +6,7 @@ const app = express();
 // 세션 설정
 const session = require('express-session');
 const passport = require('passport');
-const passportConfig = require('./routes/passport'); // 여기
+const passportConfig = require('./routes/passport.js');
 const UserRoute = require("./routes/user_routes.js");
 
 var cookieParser = require('cookie-parser');
@@ -29,20 +29,17 @@ app.use(cookieParser());
 
 app.use(session({ 
   secret: 'SECRET_KEY', 
-  resave: true, 
-  saveUninitialized: false
+  resave: false, 
+  saveUninitialized: true
 })); // 세션 활성화
 app.use(passport.initialize());   // passport 구동
 app.use(passport.session());      // 세션 연결
 passportConfig();
 
-app.use("/api/user", UserRoute);
+// app.set('view engine', 'ejs'); // Error: No default engine was specified and no extension was provided.
+// app.set('views', path.join(__dirname, 'test-html')); // Error: No default engine was specified and no extension was provided.
 
-app.get("/api", (req, res) => {
-    res.json({
-      success: true,
-    });
-  });
+app.use("/api/user", UserRoute);
 
 const specs = swaggerJsdoc(swaggerOption);
 app.use("/api-docs",
@@ -52,19 +49,19 @@ app.use("/api-docs",
 
 
 //- catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 //- error handler
-app.use(function(err, req, res, next) {
-  //- set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// app.use(function(err, req, res, next) {
+//   //- set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  //- render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+//   //- render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 app.listen(process.env.TEST_SERVER_PORT, () => console.log("server start"));

@@ -28,7 +28,7 @@ const options = {
             },
         ],
     },
-    apis: ["./routes/*.js", "./swagger/*.js", "./model/*.js"],
+    apis: ["./routes/*.js", "./swagger/*.js", "./controller/*.js"],
 };
 
 module.exports = options;
